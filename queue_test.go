@@ -10,7 +10,6 @@ func TestAdd(t *testing.T) {
 	for i := 0; i != n; i++ {
 		q.Add()
 		go func(c int) {
-			return
 		}(i)
 	}
 	if jobs := q.Current(); jobs != n {
@@ -18,6 +17,7 @@ func TestAdd(t *testing.T) {
 		t.Fail()
 	}
 }
+
 func TestWait(t *testing.T) {
 	q := New(10)
 	n := 5
@@ -25,7 +25,6 @@ func TestWait(t *testing.T) {
 		q.Add()
 		go func(c int) {
 			defer q.Done()
-			return
 		}(i)
 	}
 	// wait for the end of the all jobs
@@ -35,6 +34,7 @@ func TestWait(t *testing.T) {
 		t.Fail()
 	}
 }
+
 func TestDone(t *testing.T) {
 	q := New(10)
 	n := 5
@@ -43,7 +43,6 @@ func TestDone(t *testing.T) {
 		go func(c int) {
 			// let all the jobs done
 			defer q.Done()
-			return
 		}(i)
 	}
 	// wait for the end of the all jobs
@@ -61,7 +60,6 @@ func TestCurrent(t *testing.T) {
 		q.Add()
 		go func(c int) {
 			defer q.Done()
-			return
 		}(i)
 	}
 	q.Wait()

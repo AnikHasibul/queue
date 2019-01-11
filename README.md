@@ -6,7 +6,7 @@ package queue gives you a queue group accessibility. Helps you to limit
 goroutines, wait for the end of the all goroutines and much more...
 
     maxRoutines := 50
-    q := New(maxRoutines)
+    q := queue.New(maxRoutines)
     for i := 0; i != 1000; i++ {
     	q.Add()
     	go func(c int) {
