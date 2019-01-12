@@ -31,7 +31,7 @@ func New(max int) *Q {
 	return q
 }
 
-// Add adds a new job to the queue
+// Add adds a new job to the queue.
 func (q *Q) Add() {
 	q.addJob()
 }
@@ -47,7 +47,7 @@ func (q *Q) Done() {
 	q.waitSignal <- true
 }
 
-// Current returns the number of current running jobs
+// Current returns the number of current running jobs.
 func (q *Q) Current() int {
 	return len(q.hasJob)
 }
@@ -57,7 +57,7 @@ func (q *Q) Wait() {
 	q.waitForEnd()
 }
 
-// Close closes a queue group gracefully
+// Close closes a queue group gracefully.
 func (q *Q) Close() {
 	close(q.hasJob)
 	close(q.waitSignal)

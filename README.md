@@ -41,21 +41,7 @@ New creates a new queue group. It takes max running jobs as a parameter.
 ```go
 func (q *Q) Add()
 ```
-Add adds a new job to the queue
-
-#### func (*Q) Close
-
-```go
-func (q *Q) Close()
-```
-Close closes a queue group gracefully
-
-#### func (*Q) Current
-
-```go
-func (q *Q) Current() int
-```
-Current returns the number of current running jobs
+Add adds a new job to the queue.
 
 #### func (*Q) Done
 
@@ -70,3 +56,18 @@ Done decrements the queue group counter.
 func (q *Q) Wait()
 ```
 Wait waits for the end of the all jobs.
+
+#### func (*Q) Current
+
+```go
+func (q *Q) Current() int
+```
+Current returns the number of current running jobs.
+
+#### func (*Q) Close
+
+```go
+func (q *Q) Close()
+```
+Close closes a queue group gracefully.
+
