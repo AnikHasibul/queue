@@ -7,12 +7,12 @@ goroutines, wait for the end of the all goroutines and much more...
 
     maxRoutines := 50
     q := queue.New(maxRoutines)
+    defer q.Close()
     for i := 0; i != 1000; i++ {
     	q.Add()
     	go func(c int) {
     		defer q.Done()
     		fmt.Println(c)
-    		return
     	}(i)
     }
     //wait for the end of the all jobs
@@ -43,12 +43,19 @@ func (q *Q) Add()
 ```
 Add adds a new job to the queue
 
+#### func (*Q) Close
+
+```go
+func (q *Q) Close()
+```
+Close closes a queue group gracefully
+
 #### func (*Q) Current
 
 ```go
 func (q *Q) Current() int
 ```
-Current returns the current running jobs
+Current returns the number of current running jobs
 
 #### func (*Q) Done
 

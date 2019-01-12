@@ -6,6 +6,7 @@ import (
 
 func TestAdd(t *testing.T) {
 	q := New(10)
+	defer q.Close()
 	n := 5
 	for i := 0; i != n; i++ {
 		q.Add()
@@ -20,6 +21,7 @@ func TestAdd(t *testing.T) {
 
 func TestWait(t *testing.T) {
 	q := New(10)
+	defer q.Close()
 	n := 5
 	for i := 0; i != n; i++ {
 		q.Add()
@@ -37,6 +39,7 @@ func TestWait(t *testing.T) {
 
 func TestDone(t *testing.T) {
 	q := New(10)
+	defer q.Close()
 	n := 5
 	for i := 0; i != n; i++ {
 		q.Add()
@@ -55,6 +58,7 @@ func TestDone(t *testing.T) {
 
 func TestCurrent(t *testing.T) {
 	q := New(10)
+	defer q.Close()
 	n := 5
 	for i := 0; i != n; i++ {
 		q.Add()

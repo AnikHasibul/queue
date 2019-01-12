@@ -3,12 +3,12 @@
 //
 //	maxRoutines := 50
 //	q := queue.New(maxRoutines)
+//	defer q.Close()
 //	for i := 0; i != 1000; i++ {
 //		q.Add()
 //		go func(c int) {
 //			defer q.Done()
 //			fmt.Println(c)
-//			return
 //		}(i)
 //	}
 //	//wait for the end of the all jobs
@@ -17,13 +17,17 @@ package queue
 
 // Q holds a queue group and it's essentials.
 type Q struct {
-	hasJob chan bool
+	max        int
+	hasJob     chan bool
+	waitSignal chan bool
 }
 
 // New creates a new queue group. It takes max running jobs as a parameter.
 func New(max int) *Q {
 	q := new(Q)
+	q.max = max
 	q.hasJob = make(chan bool, max)
+	q.waitSignal = make(chan bool, max)
 	return q
 }
 
@@ -35,9 +39,15 @@ func (q *Q) Add() {
 // Done decrements the queue group counter.
 func (q *Q) Done() {
 	q.delJob()
+	// if channel buffer reaches to the max.
+	// replace this with a new channel
+	if len(q.waitSignal) == q.max {
+		q.waitSignal = make(chan bool, q.max)
+	}
+	q.waitSignal <- true
 }
 
-// Current returns the current running jobs
+// Current returns the number of current running jobs
 func (q *Q) Current() int {
 	return len(q.hasJob)
 }
@@ -45,6 +55,13 @@ func (q *Q) Current() int {
 // Wait waits for the end of the all jobs.
 func (q *Q) Wait() {
 	q.waitForEnd()
+}
+
+// Close closes a queue group gracefully
+func (q *Q) Close() {
+	close(q.hasJob)
+	close(q.waitSignal)
+	q = nil
 }
 
 // add jobs till the channel blocks ;)
@@ -59,6 +76,10 @@ func (q *Q) delJob() {
 
 // wait until it's 0
 func (q *Q) waitForEnd() {
-	for len(q.hasJob) != 0 {
+	for {
+		if len(q.hasJob) == 0 {
+			return
+		}
+		<-q.waitSignal
 	}
 }
