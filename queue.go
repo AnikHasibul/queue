@@ -1,4 +1,4 @@
-// package queue gives you a queue group accessibility.
+// Package queue gives you a queue group accessibility.
 // Helps you to limit goroutines, wait for the end of the all goroutines and much more...
 //
 //	maxRoutines := 50
